@@ -1,9 +1,9 @@
-class ProductsController < ApplicationController
+# frozen_string_literal: true
 
+class ProductsController < ApplicationController
   def index
     @products = Product.all
     set_currencies
-    puts "#{@cash}**********"
   end
 
   def show
@@ -14,9 +14,7 @@ class ProductsController < ApplicationController
     @product = Product.find(params[:id])
     @price = @product.get_price(params[:currency])
     @currency = params[:currency]
-    respond_to do |format|
-      format.js {}
-    end
+    render json: { price: @price, currency: @currency }
   end
 
   private

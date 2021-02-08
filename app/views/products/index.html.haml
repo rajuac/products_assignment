@@ -5,12 +5,13 @@
     %article.product
       %h2= product.name
       %p= product.description
+      = select_tag :param_name,options_for_select([["EUR",product.price]]+@cash.map{|c| [c["currency"],c["rate"]]}),:onchange =>"select_currency(this,'#{product.id}')"
+
       %strong
         .price 
           = product.price
           EUR
-          = select_tag :param_name,options_for_select(@cash.map{|c| [c["currency"],c["rate"]]}),:onchange =>"select_currency(this,'#{product.id}')"
-          = link_to 'Show more', product
+      = link_to 'Show more', product
 
 :javascript
   function select_currency(e,id) {  
@@ -18,10 +19,13 @@
     console.log(rate)
     console.log(id)
     jQuery.ajax({
-      url: "/change_currency",
+      url: "/products/change_currency",
       type: "GET",
-      data: {"id" : id,"currency" : rate},
-      dataType: "html"
-     
+      data: {"id" : id,"currency" : rate,},
+      dataType: "html",
+      success:function(data) {
+        var data = JSON.parse(data)
+       $(e).parent().find('.price').text(data.price + " " + data.currency)
+       }
     });
   }

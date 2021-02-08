@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: 'products#index'
   resources :products do
     collection do
-      get 'change_currency/:currency/:id', to: 'products#change_currency', as: 'currency'
+      get 'change_currency', to: 'products#change_currency', as: 'currency'
     end
   end
   # The priority is based upon order of creation: first created -> highest priority.

@@ -32,4 +32,11 @@ RSpec.describe "Products", type: :request do
       expect(price.text).to match(/34.56\sEUR/)
     end
   end
+
+  describe "GET /change_currency" do
+    it "shows currency details" do
+      get :change_currency, :params => {:id=>Product.first.id,:currency=>"EUR"}
+      expect(response).to have_http_status(ok)
+    end
+  end
 end
