@@ -1,0 +1,27 @@
+%h1 Check out our products!
+
+.row.product-list
+  - @products.each do |product|
+    %article.product
+      %h2= product.name
+      %p= product.description
+      %strong
+        .price 
+          = product.price
+          EUR
+          = select_tag :param_name,options_for_select(@cash.map{|c| [c["currency"],c["rate"]]}),:onchange =>"select_currency(this,'#{product.id}')"
+          = link_to 'Show more', product
+
+:javascript
+  function select_currency(e,id) {  
+    var rate = $(e).find('option:selected').text()
+    console.log(rate)
+    console.log(id)
+    jQuery.ajax({
+      url: "/change_currency",
+      type: "GET",
+      data: {"id" : id,"currency" : rate},
+      dataType: "html"
+     
+    });
+  }
